@@ -29,7 +29,49 @@ const io = new Server(server, {
     connectionStateRecovery : {}
 });
 
+io.on('connection', async (socket) => {
+    console.log("Usuario conectado");
 
+    // Evento de desconexión
+    socket.on('disconnect', () => {
+        console.log("Usuario desconectado");
+    });
+
+    socket.on('chat message', async(msg, username) => {
+        let result;
+
+        try {
+            result = await db.execute({
+                sql : `INSERT INTO messages (content, user) VALUES (:msg, :username)`,
+                args : {msg, username}
+            });
+        } catch (err) {
+            console.log(err);
+            return;
+        }
+
+        io.emit('chat message', msg, result.lastInsertRowid.toLocaleString(), username);
+    });
+
+    console.log(socket.handshake.auth);
+
+    if(!socket.recovered) {
+        try {
+            const result = await db.execute({
+                sql : `SELECT * FROM messages WHERE id_message > ?`,
+                args : [socket.handshake.auth.serverOffset ?? 0]
+            });
+
+            result.rows.forEach(row => {
+                socket.emit('chat message', row.content, row.id_message.toLocaleString(), row.user, row.fecha);
+            });
+            
+        } catch (err) {
+            console.log(err);
+            return;
+        }
+    }
+});
 
 app.use(logger('dev'));
 app.use(express.static(process.cwd() + "/client"));
