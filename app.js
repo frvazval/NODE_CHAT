@@ -8,10 +8,10 @@ import { createClient } from '@libsql/client';
 process.loadEnvFile();
 const PORT = process.env.PORT;
 
-const db = {
+const db = createClient({
     url : process.env.DB_URL,
     authToken : process.env.DB_TOKEN
-};
+});
 
 await db.execute(`
     CREATE TABLE IF NOT EXISTS messages (
