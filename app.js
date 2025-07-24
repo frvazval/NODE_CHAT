@@ -21,10 +21,13 @@ await db.execute(`
     fecha TIMESTAMP default CURRENT_TIMESTAMP
     )
     `);
-
+   
 const app = express();
 const server = createServer(app);
 
+const io = new Server(server, {
+    connectionStateRecovery : {}
+});
 
 
 
