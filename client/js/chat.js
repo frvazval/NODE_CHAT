@@ -15,36 +15,37 @@ function getRandomColor() {
     return `hsl(${hue}, 70%, 85%)`;
 }
 
+
+let socketInitialized = false;
 formUserName.addEventListener('submit', (e) => {
     e.preventDefault();
-    userName = document.getElementById('username');
-    
+    if (socketInitialized) return; // Evita múltiples sockets/listeners
+    userName = document.getElementById('userName').value.trim();
+    if (!userName) return;
     userColors[userName] = getRandomColor();
 
-    // creamos el socket
     socket = io({
         auth : {
             serverOffset: 0,
             userName
         }
     });
+    socketInitialized = true;
 
     socket.on('chat message', (msg, serverOffset, usuarioMensaje) => {
         if (!userColors[usuarioMensaje]) {
             userColors[usuarioMensaje] = getRandomColor();
-        } 
-
+        }
         const isOwn = usuarioMensaje === userName;
-        const color = userColors[userName];
-
+        const color = userColors[usuarioMensaje];
         let item = `<li class="message${isOwn ? ' own' : ' other'}" style="background:${color}">`;
         item += `${msg}<span>${usuarioMensaje}</span></li>`;
         messages.innerHTML += item;
-
         socket.auth.serverOffset = serverOffset;
-
         messages.scrollTop = messages.scrollHeight;
     });
+    // Opcional: ocultar el formulario de usuario tras iniciar sesión
+    formUserName.style.display = 'none';
 });
 
 form.addEventListener('submit', (e) => {
