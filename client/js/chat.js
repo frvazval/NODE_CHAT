@@ -18,6 +18,7 @@ function getRandomColor() {
 formUserName.addEventListener('submit', (e) => {
     e.preventDefault();
     userName = document.getElementById('username');
+    
     userColors[userName] = getRandomColor();
 
     // creamos el socket
