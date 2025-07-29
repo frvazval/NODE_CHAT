@@ -33,7 +33,7 @@ formUserName.addEventListener('submit', (e) => {
         const isOwn = usuarioMensaje === userName;
         const color = userColors[userName];
 
-        const item = `<li class="message${isOwn ? ' own' : ' other'}" style="background:${color}">`;
-        
+        let item = `<li class="message${isOwn ? ' own' : ' other'}" style="background:${color}">`;
+        item += `${msg}<span>${usuarioMensaje}</span></li>`
     });
 });
