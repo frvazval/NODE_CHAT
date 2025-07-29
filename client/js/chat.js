@@ -29,5 +29,11 @@ formUserName.addEventListener('submit', (e) => {
         if (!userColors[usuarioMensaje]) {
             userColors[usuarioMensaje] = getRandomColor();
         } 
+
+        const isOwn = usuarioMensaje === userName;
+        const color = userColors[userName];
+
+        const item = `<li class="message${isOwn ? ' own' : ' other'}" style="background:${color}">`;
+        
     });
 });
