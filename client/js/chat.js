@@ -1,6 +1,7 @@
 import {io} from 'https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.esm.min.js';
 
 const formUserName = document.getElementById('formUserName');
+const form = document.getElementById('form'); // formulario de los mensajes
 
 let userName = ""; // nombre del usuario actual
 let socket;
