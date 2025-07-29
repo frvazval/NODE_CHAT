@@ -2,6 +2,8 @@ import {io} from 'https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.
 
 const formUserName = document.getElementById('formUserName');
 const form = document.getElementById('form'); // formulario de los mensajes
+const input = document.getElementById('message'); // mensaje
+const messages = document.getElementById('messages'); // lista de mensajes
 
 let userName = ""; // nombre del usuario actual
 let socket;
@@ -35,6 +37,9 @@ formUserName.addEventListener('submit', (e) => {
         const color = userColors[userName];
 
         let item = `<li class="message${isOwn ? ' own' : ' other'}" style="background:${color}">`;
-        item += `${msg}<span>${usuarioMensaje}</span></li>`
+        item += `${msg}<span>${usuarioMensaje}</span></li>`;
+        messages.innerHTML += item;
+
+        
     });
 });
