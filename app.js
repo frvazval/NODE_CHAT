@@ -39,18 +39,17 @@ io.on('connection', async (socket) => {
 
     socket.on('chat message', async(msg, username) => {
         let result;
-
+        let fecha = new Date().toISOString();
         try {
             result = await db.execute({
-                sql : `INSERT INTO messages (content, user) VALUES (:msg, :username)`,
-                args : {msg, username}
+                sql : `INSERT INTO messages (content, user, fecha) VALUES (:msg, :username, :fecha)`,
+                args : {msg, username, fecha}
             });
         } catch (err) {
             console.log(err);
             return;
         }
-
-        io.emit('chat message', msg, result.lastInsertRowid.toLocaleString(), username);
+        io.emit('chat message', msg, result.lastInsertRowid.toLocaleString(), username, fecha);
     });
 
     console.log(socket.handshake.auth);

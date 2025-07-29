@@ -6,33 +6,53 @@
   padding: 0;
 }
 
+
+
+
+
+
 body {
   font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
-  background: #181c20;
-  color: #e3e6ea;
+  background: linear-gradient(135deg, #b6b8d6 0%, #b8a4d6 100%);
+  color: #23233a;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background 0.5s;
 }
 
+
+
+
+
+
 main {
-  background: #23272b;
-  border-radius: 16px;
-  box-shadow: 0 4px 32px rgba(0,0,0,0.25);
-  padding: 32px 24px 16px 24px;
+  background: #e6e7f3ee;
+  border-radius: 20px;
+  box-shadow: 0 6px 32px 0 rgba(120,100,180,0.10), 0 1.5px 8px 0 rgba(120,100,180,0.10);
+  padding: 32px 22px 16px 22px;
   width: 100%;
-  max-width: 420px;
-  min-width: 320px;
+  max-width: 600px;
+  min-width: 340px;
+  border: 2px solid #a59edb;
+  transition: background 0.5s;
 }
+
+
+
+
+
 
 h1 {
   text-align: center;
   font-size: 2rem;
   margin-bottom: 18px;
   letter-spacing: 2px;
-  color: #7ec4fa;
+  color: #5a4ca6;
+  text-shadow: 0 2px 8px #a59edb99;
 }
+
 
 #formUserName, #form {
   display: flex;
@@ -41,42 +61,72 @@ h1 {
   margin-bottom: 18px;
 }
 
+
+
+
+
+
 #formUserName label {
   font-size: 1rem;
-  color: #b0b6be;
+  color: #5a4ca6;
   margin-bottom: 2px;
+  font-weight: 600;
 }
+
+
+
+
+
 
 #formUserName input, #form input {
   padding: 10px 12px;
   border-radius: 8px;
-  border: 1px solid #2e3338;
-  background: #23272b;
-  color: #e3e6ea;
+  border: 1.5px solid #a59edb;
+  background: #d6d7ef;
+  color: #23233a;
   font-size: 1rem;
   outline: none;
-  transition: border 0.2s;
+  transition: border 0.2s, background 0.2s;
 }
 
+
+
+
+
+
 #formUserName input:focus, #form input:focus {
-  border: 1.5px solid #7ec4fa;
+  border: 2px solid #5a4ca6;
+  background: #e6e7f3;
 }
+
+
+
+
+
 
 #formUserName button, #form button {
   padding: 10px 0;
   border-radius: 8px;
   border: none;
-  background: linear-gradient(90deg, #7ec4fa 0%, #3a8dde 100%);
-  color: #181c20;
+  background: linear-gradient(90deg, #5a4ca6 0%, #a59edb 100%);
+  color: #fff;
   font-weight: bold;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.2s;
+  box-shadow: 0 2px 8px #a59edb44;
+  transition: background 0.2s, color 0.2s;
 }
 
 #formUserName button:hover, #form button:hover {
-  background: linear-gradient(90deg, #3a8dde 0%, #7ec4fa 100%);
+  background: linear-gradient(90deg, #a59edb 0%, #5a4ca6 100%);
+  color: #5a4ca6;
 }
+
+
+
+
+
+
 
 #messages {
   list-style: none;
@@ -86,49 +136,81 @@ h1 {
   padding-right: 4px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: #a59edb #d6d7ef;
+}
+
+#messages::-webkit-scrollbar {
+  width: 8px;
+  background: #d6d7ef;
+}
+#messages::-webkit-scrollbar-thumb {
+  background: #a59edb;
+  border-radius: 8px;
 }
 
 
+
+
+
+
+
 .message {
-  padding: 10px 14px 8px 14px;
-  border-radius: 10px;
-  background: #23272b;
-  color: #e3e6ea;
+  padding: 12px 16px 10px 16px;
+  border-radius: 12px;
+  background: #d6d7ef;
+  color: #23233a;
   font-size: 1rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  box-shadow: 0 1.5px 8px rgba(120,100,180,0.10);
   position: relative;
   word-break: break-word;
+  border: 1.5px solid #a59edb;
+  transition: background 0.2s, color 0.2s;
 }
+
+
+
+
+
 
 .message.own {
   align-self: flex-end;
-  background: linear-gradient(90deg, #7ec4fa 0%, #3a8dde 100%);
-  color: #181c20 !important;
+  background: linear-gradient(90deg, #a59edb 0%, #5a4ca6 100%);
+  color: #fff !important;
+  border: 1.5px solid #5a4ca644;
 }
 
 .message.own span {
-  color: #23272b !important;
+  color: #e6e7f3 !important;
 }
+
+
+
+
+
 
 .message.other {
   align-self: flex-start;
-  background: #23272b;
-  color: #e3e6ea;
+  background: #d6d7ef;
+  color: #23233a;
+  border: 1.5px solid #a59edb;
 }
 
 .message.other span {
-  color: #b0b6be;
+  color: #5a4ca6;
 }
 
+
 .message span {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   margin-top: 4px;
   align-self: flex-end;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 @media (max-width: 500px) {
