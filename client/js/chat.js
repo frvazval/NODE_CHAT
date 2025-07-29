@@ -32,16 +32,32 @@ formUserName.addEventListener('submit', (e) => {
     });
     socketInitialized = true;
 
-    socket.on('chat message', (msg, serverOffset, usuarioMensaje) => {
-        if (!userColors[usuarioMensaje]) {
-            userColors[usuarioMensaje] = getRandomColor();
+    socket.on('chat message', (msg, serverOffset, usuarioMensaje, fecha) => {
+        // Soporta ambos casos: 3 o 4 argumentos
+        let nombre = usuarioMensaje;
+        let colorUser = usuarioMensaje;
+        if (typeof usuarioMensaje === 'undefined' && typeof serverOffset === 'string') {
+            // Mensaje antiguo: msg, id, user, fecha
+            nombre = serverOffset;
+            colorUser = serverOffset;
+            serverOffset = null;
         }
-        const isOwn = usuarioMensaje === userName;
-        const color = userColors[usuarioMensaje];
+        if (!userColors[nombre]) {
+            userColors[nombre] = getRandomColor();
+        }
+        const isOwn = nombre === userName;
+        const color = userColors[nombre];
+        // Si no hay fecha, usar la fecha actual
+        let fechaMostrar = fecha;
+        if (!fechaMostrar) {
+            const hoy = new Date();
+            fechaMostrar = hoy.toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' }) +
+                ' ' + hoy.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+        }
         let item = `<li class="message${isOwn ? ' own' : ' other'}" style="background:${color}">`;
-        item += `${msg}<span>${usuarioMensaje}</span></li>`;
+        item += `<span>${nombre} (${fechaMostrar})</span>${msg}</li>`;
         messages.innerHTML += item;
-        socket.auth.serverOffset = serverOffset;
+        if (serverOffset && socket && socket.auth) socket.auth.serverOffset = serverOffset;
         messages.scrollTop = messages.scrollHeight;
     });
     // Opcional: ocultar el formulario de usuario tras iniciar sesión
