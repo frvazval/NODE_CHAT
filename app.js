@@ -39,11 +39,20 @@ io.on('connection', async (socket) => {
 
     socket.on('chat message', async(msg, username) => {
         let result;
-        let fecha = new Date().toISOString();
+        let fechaObj = new Date();
+        // Formato: dd/mm/yyyy hh:mm
+        let fecha = fechaObj.toLocaleString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
         try {
             result = await db.execute({
                 sql : `INSERT INTO messages (content, user, fecha) VALUES (:msg, :username, :fecha)`,
-                args : {msg, username, fecha}
+                args : {msg, username, fecha: fechaObj.toISOString()}
             });
         } catch (err) {
             console.log(err);
@@ -62,7 +71,16 @@ io.on('connection', async (socket) => {
             });
 
             result.rows.forEach(row => {
-                socket.emit('chat message', row.content, row.id_message.toLocaleString(), row.user, row.fecha);
+                // Formatear la fecha al emitir mensajes antiguos
+                let fechaFormateada = new Date(row.fecha).toLocaleString('es-ES', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                });
+                socket.emit('chat message', row.content, row.id_message.toLocaleString(), row.user, fechaFormateada);
             });
             
         } catch (err) {
