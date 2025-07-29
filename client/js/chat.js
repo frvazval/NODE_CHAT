@@ -2,9 +2,32 @@ import {io} from 'https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.
 
 const formUserName = document.getElementById('formUserName');
 
-let username = ""; // nombre del usuario actual
+let userName = ""; // nombre del usuario actual
 let socket;
 
 let userColors = {}; // guardar los colores de cada usuario
 
+function getRandomColor() {
+    const hue = Math.floor(Math.random() * 360);
+    return `hsl(${hue}, 70%, 85%)`;
+}
 
+formUserName.addEventListener('submit', (e) => {
+    e.preventDefault();
+    userName = document.getElementById('username');
+    userColors[userName] = getRandomColor();
+
+    // creamos el socket
+    socket = io({
+        auth : {
+            serverOffset: 0,
+            userName
+        }
+    });
+
+    socket.on('chat message', (msg, serverOffset, usuarioMensaje) => {
+        if (!userColors[usuarioMensaje]) {
+            userColors[usuarioMensaje] = getRandomColor();
+        } 
+    });
+});
