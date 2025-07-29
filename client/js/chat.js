@@ -40,6 +40,17 @@ formUserName.addEventListener('submit', (e) => {
         item += `${msg}<span>${usuarioMensaje}</span></li>`;
         messages.innerHTML += item;
 
-        
+        socket.auth.serverOffset = serverOffset;
+
+        messages.scrollTop = messages.scrollHeight;
     });
 });
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    if (input.value && socket) {
+        socket.emit('chat message', input.value, userName);
+        input.value = "";
+    }
+})
